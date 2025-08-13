@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ai-trade-platform-ingress
+  namespace: ai-trade-platform
+  annotations:
+    # Use Traefik as ingress controller (default in K3s)
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    # Optional: Redirect HTTP to HTTPS
+    # traefik.ingress.kubernetes.io/redirect-entry-point: websecure
+    # traefik.ingress.kubernetes.io/redirect-permanent: "true"
+spec:
+  rules:
+  - host: ai-trade.your-domain.com  # Replace with your domain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: ai-trade-platform-service
+            port:
+              number: 80
+  # Optional: TLS configuration
+  # tls:
+  # - hosts:
+  #   - ai-trade.your-domain.com
+  #   secretName: ai-trade-platform-tls

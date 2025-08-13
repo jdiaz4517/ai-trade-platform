@@ -1,0 +1,97 @@
+spring:
+  application:
+    name: ai-trade-platform
+  
+  # Spring Boot AutoConfiguration Exclusions
+  autoconfigure:
+    exclude:
+      - org.springframework.ai.autoconfigure.openai.OpenAiAutoConfiguration
+  
+  # Database configuration (H2 for development)
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  
+  # H2 Console (for development)
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  # Spring AI Configuration
+  ai:
+    # Ollama configuration (for offline mode)
+    ollama:
+      base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+      chat:
+        model: ${OLLAMA_MODEL:mistral}
+        options:
+          temperature: 0.7
+          top-p: 0.9
+    
+    # OpenAI-compatible configuration (used for Groq)
+    openai:
+      api-key: ${GROQ_API_KEY:}
+      base-url: ${GROQ_BASE_URL:https://api.groq.com/openai}
+      chat:
+        model: ${GROQ_MODEL:meta-llama/llama-4-scout-17b-16e-instruct}
+        options:
+          temperature: 0.7
+          top_p: 0.9
+
+# Application specific configuration
+app:
+  # AI Engine Selection: "ollama", "groq", or "grok"
+  active-ai-engine: ${ACTIVE_AI_ENGINE:ollama}
+  ai-agent:
+    system-message: |
+      You are a smart AI assistant for a trade platform connecting customers with skilled tradespeople.
+      
+      Be conversational and adaptive. Don't repeat questions you've already asked or information you've already received.
+      
+      For CUSTOMERS:
+      - Understand their problem and help them find the right tradesperson
+      - Gather key details naturally: service type, location, urgency, budget
+      - Once you have enough information, provide helpful next steps or mock tradesperson recommendations
+      - Don't interrogate with checklists - have a natural conversation
+      
+      For TRADESPEOPLE:
+      - Help them showcase their skills and find suitable jobs
+      - Learn about their expertise, areas they serve, and availability
+      - Suggest relevant opportunities based on their profile
+      
+      Key principles:
+      - Be conversational, not robotic
+      - Remember what was already discussed in this conversation
+      - Ask 1-2 relevant follow-up questions at most, not long lists
+      - Provide value and move the conversation forward
+      - When you have sufficient information, take action (recommend tradespeople, suggest next steps)
+
+server:
+  port: 8081
+
+# Spring Boot Actuator for health checks
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+# Logging
+logging:
+  level:
+    com.example.aitrade: DEBUG
+    org.springframework.ai: DEBUG
+    org.springframework.ai.openai: TRACE
+    org.springframework.web.client: DEBUG

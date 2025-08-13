@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Trade Platform - Chat Interface</title>
+    <link rel="stylesheet" href="/css/chat.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🔧 AI Trade Platform</h1>
+            <div class="engine-indicator">
+                <span id="current-engine">Loading...</span>
+            </div>
+        </header>
+
+        <!-- Login/Username Section -->
+        <div id="login-section" class="login-section">
+            <div class="login-card">
+                <h2>Welcome to AI Trade Platform</h2>
+                <p>Enter your username to start chatting with our AI assistant</p>
+                <div class="input-group">
+                    <input type="text" id="username-input" placeholder="Enter your username (e.g., customer-123)" maxlength="50">
+                    <select id="user-type-select">
+                        <option value="CUSTOMER">Customer (Need Services)</option>
+                        <option value="TRADESPERSON">Tradesperson (Provide Services)</option>
+                    </select>
+                </div>
+                <button id="start-chat-btn" class="primary-btn">Start Chat</button>
+            </div>
+        </div>
+
+        <!-- Chat Section -->
+        <div id="chat-section" class="chat-section" style="display: none;">
+            <div class="chat-header">
+                <div class="user-info">
+                    <span id="user-display"></span>
+                    <span class="session-info">Session: <span id="session-display"></span></span>
+                </div>
+                <div class="chat-actions">
+                    <button id="new-session-btn" class="secondary-btn">New Session</button>
+                    <button id="logout-btn" class="secondary-btn">Logout</button>
+                </div>
+            </div>
+
+            <!-- Chat Messages -->
+            <div class="chat-messages" id="chat-messages">
+                <div class="system-message">
+                    <p>👋 Hello! I'm your AI assistant. I can help you with trade-related needs. How can I assist you today?</p>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="chat-input">
+                <div class="input-container">
+                    <textarea id="message-input" placeholder="Type your message here..." rows="2"></textarea>
+                    <button id="send-btn" class="send-btn" disabled>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M2 21L23 12L2 3V10L17 12L2 14V21Z" fill="currentColor"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="input-footer">
+                    <span class="char-count"><span id="char-count">0</span>/500</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p>AI is thinking...</p>
+        </div>
+    </div>
+
+    <script src="/js/chat.js"></script>
+</body>
+</html>

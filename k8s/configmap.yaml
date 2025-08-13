@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ai-trade-platform-config
+  namespace: ai-trade-platform
+data:
+  # AI Engine Configuration
+  ACTIVE_AI_ENGINE: "groq"  # Change to "ollama" for local AI
+  
+  # Groq Configuration
+  GROQ_BASE_URL: "https://api.groq.com/openai/v1"
+  GROQ_MODEL: "llama3-8b-8192"
+  
+  # Ollama Configuration (for offline mode)
+  OLLAMA_BASE_URL: "http://ollama-service:11434"
+  OLLAMA_MODEL: "mistral"
+  
+  # Spring Boot Configuration
+  SPRING_PROFILES_ACTIVE: "production"
+  SPRING_H2_CONSOLE_ENABLED: "false"
+  
+  # Logging
+  LOGGING_LEVEL_COM_EXAMPLE_AITRADE: "INFO"
+  LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_AI: "WARN"

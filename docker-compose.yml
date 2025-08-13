@@ -1,0 +1,84 @@
+services:
+  # Main application with Groq (default)
+  ai-trade-platform:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai-trade-platform
+    ports:
+      - "8081:8081"
+    environment:
+      # AI Engine Configuration
+      ACTIVE_AI_ENGINE: grok  # Change to "ollama" for local AI
+      
+      # xAI Grok Configuration (when using xAI Grok)
+      XAI_API_KEY: ${XAI_API_KEY}
+      XAI_BASE_URL: https://api.x.ai/v1
+      XAI_MODEL: grok-4-latest
+      
+      # Ollama Configuration (when using local Ollama)
+      OLLAMA_BASE_URL: http://ollama:11434
+      OLLAMA_MODEL: mistral
+      
+      # Database (H2 in-memory for demo)
+      SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb
+      SPRING_H2_CONSOLE_ENABLED: true
+      
+      # Logging
+      LOGGING_LEVEL_COM_EXAMPLE_AITRADE: INFO
+    networks:
+      - ai-trade-network
+    profiles:
+      - grok
+      - default
+
+  # Local Ollama service (optional, for offline mode)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - ai-trade-network
+    profiles:
+      - ollama
+    # Uncomment for GPU support (NVIDIA)
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # Application with Ollama (local AI)
+  ai-trade-platform-offline:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai-trade-platform-offline
+    ports:
+      - "8082:8081"  # Different port to avoid conflicts
+    environment:
+      ACTIVE_AI_ENGINE: ollama
+      OLLAMA_BASE_URL: http://ollama:11434
+      OLLAMA_MODEL: mistral
+      SPRING_DATASOURCE_URL: jdbc:h2:mem:testdb
+      SPRING_H2_CONSOLE_ENABLED: true
+      LOGGING_LEVEL_COM_EXAMPLE_AITRADE: INFO
+    depends_on:
+      - ollama
+    networks:
+      - ai-trade-network
+    profiles:
+      - ollama
+
+volumes:
+  ollama_data:
+    driver: local
+
+networks:
+  ai-trade-network:
+    driver: bridge

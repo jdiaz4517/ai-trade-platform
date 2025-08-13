@@ -1,0 +1,42 @@
+# Maven
+target/
+!target/*.jar
+*.jar
+*.war
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Logs
+*.log
+logs/
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Kubernetes
+k8s/
+
+# Documentation
+*.md
+!README.md
+
+# Test files
+src/test/
+
+# Maven wrapper (optional, keep if needed)
+.mvn/wrapper/maven-wrapper.jar
