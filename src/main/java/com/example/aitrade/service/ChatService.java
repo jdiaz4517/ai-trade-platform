@@ -40,6 +40,8 @@ public class ChatService {
     
     @Value("${app.ai-agent.system-message}")
     private String systemMessage;
+
+    private String bla;
     
     // In-memory conversation history (use Redis/Database in production)
     private final Map<String, List<Message>> conversationHistory = new ConcurrentHashMap<>();
